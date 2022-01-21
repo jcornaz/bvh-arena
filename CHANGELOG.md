@@ -13,8 +13,6 @@ Unreleased changes (if any) can be found in the latest [release pull-request].
 ## 0.1.0 (2022-01-21)
 
 
-### ⚠ BREAKING CHANGES
-
 ### Features
 
 * bounding volume hierarchy
