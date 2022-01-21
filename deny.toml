@@ -1,0 +1,25 @@
+[advisories]
+vulnerability = "deny"
+unmaintained = "deny"
+yanked = "deny"
+notice = "deny"
+ignore = []
+
+[licenses]
+default = "deny"
+unlicensed = "deny"
+copyleft = "deny"
+allow = [
+    "Unlicense",
+    "MIT",
+    "Zlib",
+]
+
+[[licenses.clarify]]
+name = "stretch"
+expression = "MIT"
+license-files = []
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"

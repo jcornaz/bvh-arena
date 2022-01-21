@@ -1,0 +1,37 @@
+name: dependencies
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+  workflow_dispatch:
+
+  schedule:
+    - cron: '0 0 */10 * *'
+
+jobs:
+  unwanted-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          profile: minimal
+      - run: cargo install cargo-deny --locked
+      - run: cargo deny check
+
+  unused-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+          profile: minimal
+      - run: cargo install cargo-udeps --locked
+      - run: cargo udeps

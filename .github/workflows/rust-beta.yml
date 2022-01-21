@@ -1,0 +1,29 @@
+name: rust-beta
+
+on:
+  schedule:
+    - cron: '0 0 */7 * *'
+
+  workflow_dispatch:
+
+env:
+  RUST_VERSION: 1.58.0
+  RUSTFLAGS: "-D warnings"
+
+jobs:
+  bevy-main:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+          profile: minimal
+
+      - run: cargo test --all-features
