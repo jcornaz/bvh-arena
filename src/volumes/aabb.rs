@@ -6,7 +6,7 @@ use crate::BoundingVolume;
 /// Use `Aabb<2>` for 2d, `Aabb<3>` for 3d, etc.
 ///
 /// `Aabb<0>` is valid, though arguably not very useful.
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Aabb<const D: usize> {
     min: [f32; D],
     max: [f32; D],
