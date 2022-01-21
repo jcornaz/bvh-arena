@@ -1,6 +1,14 @@
 # bvh-arena
 
-A bounding-volume hierarchy for in-game broad-phase collision detection
+
+[![License](https://img.shields.io/github/license/jcornaz/bvh-arena)](#unlicense)
+[![Crates.io](https://img.shields.io/crates/v/bvh-arena)](https://crates.io/crates/bvh-arena)
+[![Docs](https://img.shields.io/docsrs/bvh-arena)](https://docs.rs/bvh-arena)
+[![Build](https://img.shields.io/github/workflow/status/jcornaz/bvh-arena/build)](https://github.com/jcornaz/bvh-arena/actions)
+
+
+A bounding-volume hierarchy for in-game broad-phase *collision detection* in rust
+
 
 ## Features
 
@@ -11,7 +19,10 @@ A bounding-volume hierarchy for in-game broad-phase collision detection
 
 ## Non-goals
 
-This library does *not* attempt to be optimized for ray-tracing (though, ray-cast may eventually be supported)
+This library does *not* attempt to be optimal for:
+
+* ray-tracing (though, basic ray-cast may eventually be supported)
+* static scenes
 
 
 ## `no_std` support
@@ -28,7 +39,7 @@ But it seamed that most of the existing BVH implementations are biased toward th
 And that means, they provide different API, algorithms and trade-offs than what I am looking for.
 
 
-## License
+## Unlicense
 
 This is free and unencumbered software released into the public domain.
 
