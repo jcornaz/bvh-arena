@@ -16,8 +16,7 @@
 //! use bvh_arena::{Bvh, volumes::Aabb};
 //!
 //! // The built-in `Aabb` type can be created from anything that implement `Into<[f32; D]>`
-//! // So we can use glam's vector types. But you may use another math library or even none.
-//! // Obviously, it works the same with `Vec3`.
+//! // So we can use glam's vector types. But you may use anything else you like.
 //! use glam::Vec2;
 //!
 //! // Create a bounding volume hierarchy.

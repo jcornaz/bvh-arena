@@ -1,6 +1,11 @@
 use crate::BoundingVolume;
 
 /// Axis-Aligned Bounding Box
+///
+/// It is generic over the dimension.
+/// Use `Aabb<2>` for 2d, `Aabb<3>` for 3d, etc.
+///
+/// `Aabb<0>` is valid, though arguably not very useful.
 #[derive(Debug, Copy, Clone)]
 pub struct Aabb<const D: usize> {
     min: [f32; D],

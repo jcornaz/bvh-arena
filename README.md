@@ -1,7 +1,7 @@
 # bvh-arena
 
 
-[![License](https://img.shields.io/github/license/jcornaz/bvh-arena)](#unlicense)
+[![License](https://img.shields.io/github/license/jcornaz/bvh-arena)](https://github.com/jcornaz/bvh-arena/blob/main/UNLICENSE)
 [![Crates.io](https://img.shields.io/crates/v/bvh-arena)](https://crates.io/crates/bvh-arena)
 [![Docs](https://img.shields.io/docsrs/bvh-arena)](https://docs.rs/bvh-arena)
 [![Build](https://img.shields.io/github/workflow/status/jcornaz/bvh-arena/build)](https://github.com/jcornaz/bvh-arena/actions)
@@ -24,6 +24,24 @@ This library does *not* attempt to be optimal for:
 * ray-tracing (though, basic ray-cast may eventually be supported)
 * static scenes
 
+## How usage looks like
+
+```rust
+use bvh_arena::{Bvh, volumes::Aabb};
+use glam::Vec2; // <-- You may use any math library, or even none.
+
+// Create a bounding volume hierarchy
+let mut bvh: Bvh<u8, Aabb<2>> = Bvh::default();
+
+// Insert a bounding volume
+let id = bvh.insert(1, Aabb::from_min_max(Vec2::ZERO, Vec2::new(1.0, 1.0)));
+
+// Remove a bounding volume
+bvh.remove(id);
+
+// Iteration over overlaping pairs
+bvh.for_each_overlaping_pair(|data1, data2| pairs.push((*data1, *data2)));
+```
 
 ## `no_std` support
 
