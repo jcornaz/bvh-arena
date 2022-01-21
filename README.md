@@ -2,27 +2,30 @@
 
 A bounding-volume hierarchy for in-game broad-phase collision detection
 
-## Goals
+## Features
 
-* Provide a viable bounding-volume hierarchy for broad-phase collision-detection
-* Being usable in-game where the scene can be very dynamic
-  * Insertion algorithm
-  * Fast insertion and removal
-  * Efficient reuse of memory when volumes are removed (backed by a generational-arena storage)
+* Fast insertion and removal
+* Fast iteration over overlaping pairs
+* Efficient reuse of memory when volumes are removed (backed by a generational-arena storage)
 
 
 ## Non-goals
 
-* Being optimized for ray-tracing (though, ray-cast will eventually be supported)
+This library does *not* attempt to be optimized for ray-tracing (though, ray-cast may eventually be supported)
+
+
+## `no_std` support
+
+This crate is `no_std` compatible but requires a [global allocator](https://doc.rust-lang.org/stable/core/alloc/trait.GlobalAlloc.html).
 
 
 ## Motivation
 
-In the context of building my own collision detection library for rust, I wanted to use a bounding-volume-hierarchy (BVH)
+In the context of building my own collision detection logic, I wanted to use a bounding-volume-hierarchy (BVH)
 for the broad-phase.
 
-But it seamed that most of the existing BVH implementations are biased oriented toward the ray-tracing use-case. 
-And they provide different API, algorithms and trades-off than what I am looking for.
+But it seamed that most of the existing BVH implementations are biased toward the ray-tracing use-case. 
+And that means, they provide different API, algorithms and trade-offs than what I am looking for.
 
 
 ## License

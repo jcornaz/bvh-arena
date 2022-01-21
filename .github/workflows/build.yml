@@ -28,6 +28,7 @@ jobs:
           toolchain: ${{ env.RUST_VERSION }}
           override: true
           profile: minimal
+          target: thumbv6m-none-eabi
 
       - run: cargo update
 
@@ -42,7 +43,12 @@ jobs:
           restore-keys: |
             build-${{ env.RUST_VERSION }}-${{ hashFiles('**/Cargo.lock') }}
 
-      - run: cargo check --all-targets
+      - name: Check all targets
+        run: cargo check --all-targets
+
+      - name: Check no_std
+        run: cargo check --target thumbv6m-none-eabi
+
       - run: cargo test
       - run: cargo test -- --ignored
 
@@ -74,9 +80,7 @@ jobs:
           restore-keys: code-style-${{ hashFiles('**/Cargo.lock') }}-
 
       - run: cargo fmt --all -- --check
-      - run: cargo clippy --workspace --no-default-features
-      - run: cargo clippy --workspace
-      - run: cargo clippy --workspace --all-features
+      - run: cargo clippy --all-features
 
   documentation:
     runs-on: ubuntu-latest
@@ -105,5 +109,4 @@ jobs:
           key: docs-${{ hashFiles('**/Cargo.lock') }}-${{ hashFiles('**/*.rs') }}
           restore-keys: docs-${{ hashFiles('**/Cargo.lock') }}-
 
-
-      - run: cargo doc --workspace --all-features --no-deps
+      - run: cargo doc --all-features --no-deps
