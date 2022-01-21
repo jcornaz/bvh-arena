@@ -1,0 +1,19 @@
+[package]
+name = "bvh-arena"
+version = "0.0.0"
+license = "Unlicense"
+authors = ["Jonathan Cornaz"]
+edition = "2021"
+rust-version = "1.58"
+description = "A bounding-volume hierarchy for in-game broad-phase collision detection"
+repository = "https://github.com/jcornaz/bvh-arena"
+keywords = ["bvh", "sah", "bounding", "volume", "aabb"]
+categories = ["game-development"]
+
+[dependencies]
+slotmap = { version = "1.0", default-features = false }
+
+[dev-dependencies]
+
+[profile.dev]
+opt-level = 1

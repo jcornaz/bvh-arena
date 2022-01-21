@@ -1,0 +1,109 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+  workflow_dispatch:
+
+env:
+  RUST_VERSION: 1.58.0
+  RUSTFLAGS: "-D warnings"
+  RUSTDOCFLAGS: "-D warnings"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          override: true
+          profile: minimal
+
+      - run: cargo update
+
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.rustup
+            ~/.cargo
+            ./target
+          key: build-${{ env.RUST_VERSION }}-${{ hashFiles('**/Cargo.lock') }}-${{ hashFiles('**/*.rs') }}
+          restore-keys: |
+            build-${{ env.RUST_VERSION }}-${{ hashFiles('**/Cargo.lock') }}
+
+      - run: cargo check --all-targets
+      - run: cargo test
+      - run: cargo test -- --ignored
+
+  code-style:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          override: true
+          components: clippy, rustfmt
+
+      - run: cargo update
+
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.rustup
+            ~/.cargo
+            ./target
+          key: code-style-${{ hashFiles('**/Cargo.lock') }}-${{ hashFiles('**/*.rs') }}
+          restore-keys: code-style-${{ hashFiles('**/Cargo.lock') }}-
+
+      - run: cargo fmt --all -- --check
+      - run: cargo clippy --workspace --no-default-features
+      - run: cargo clippy --workspace
+      - run: cargo clippy --workspace --all-features
+
+  documentation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install rust toolchain
+        uses: actions-rs/toolchain@v1.0.7
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          override: true
+          profile: minimal
+
+      - run: cargo update
+
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.rustup
+            ~/.cargo
+            ./target
+          key: docs-${{ hashFiles('**/Cargo.lock') }}-${{ hashFiles('**/*.rs') }}
+          restore-keys: docs-${{ hashFiles('**/Cargo.lock') }}-
+
+
+      - run: cargo doc --workspace --all-features --no-deps
