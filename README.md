@@ -40,7 +40,7 @@ let id = bvh.insert(1, Aabb::from_min_max(Vec2::ZERO, Vec2::new(1.0, 1.0)));
 bvh.remove(id);
 
 // Iteration over overlaping pairs
-bvh.for_each_overlaping_pair(|data1, data2| pairs.push((*data1, *data2)));
+bvh.for_each_overlaping_pair(|a, b| println!("{a} overlaps {b}"));
 ```
 
 ## `no_std` support
