@@ -10,7 +10,7 @@ Unreleased changes (if any) can be found in the latest [release pull-request].
 [release pull-request]: https://github.com/jcornaz/bvh-arena/pulls?q=is%3Apr+is%3Aopen+label%3A%22autorelease%3A+pending%22
 
 
-## 0.1.0 (2022-01-21)
+## 1.0.0-beta.1 (2022-01-21)
 
 
 ### Features
