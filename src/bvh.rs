@@ -73,37 +73,20 @@ impl<D, V: BoundingVolume> Bvh<D, V> {
                         self.arena[sibling_index].parent = Some(ancestor);
                         match &mut self.arena[ancestor] {
                             Node {
-                                content:
-                                    Content::Tree {
-                                        left_index,
-                                        right_index,
-                                    },
+                                content: Content::Tree { left_index, .. },
                                 ..
                             } if *left_index == parent_index => {
                                 *left_index = sibling_index;
-                                let right_index = *right_index;
-                                self.arena[ancestor].volume = self.arena[right_index]
-                                    .volume
-                                    .merge(self.arena[sibling_index].volume);
                             }
                             Node {
-                                content:
-                                    Content::Tree {
-                                        right_index,
-                                        left_index,
-                                    },
+                                content: Content::Tree { right_index, .. },
                                 ..
-                            } if *right_index == parent_index => {
-                                *right_index = sibling_index;
-                                let left_index = *left_index;
-                                self.arena[ancestor].volume = self.arena[left_index]
-                                    .volume
-                                    .merge(self.arena[sibling_index].volume);
-                            }
+                            } if *right_index == parent_index => *right_index = sibling_index,
                             _ => unreachable!(
                                 "a parent node is always a tree that contains the child node"
                             ),
                         }
+                        recalc_ancestor_volumes(&mut self.arena, ancestor);
                     }
                     // The parent was the root, so the sibling becomes the new root
                     None => {
@@ -214,6 +197,33 @@ fn insert<D, V: BoundingVolume>(
     }
 }
 
+fn recalc_ancestor_volumes<D, V: BoundingVolume>(
+    arena: &mut SlotMap<NodeIndex, Node<D, V>>,
+    node_index: NodeIndex,
+) {
+    match &arena[node_index] {
+        Node {
+            parent,
+            content:
+                Content::Tree {
+                    left_index,
+                    right_index,
+                },
+            ..
+        } => {
+            let parent = *parent;
+            arena[node_index].volume = arena[*left_index].volume.merge(arena[*right_index].volume);
+            if let Some(p) = parent {
+                recalc_ancestor_volumes(arena, p);
+            }
+        }
+        Node {
+            content: Content::Leaf(_),
+            ..
+        } => panic!("a leaf was treated as an ancestor"),
+    }
+}
+
 fn for_each_overlaping_pair<D, V: BoundingVolume>(
     arena: &SlotMap<NodeIndex, Node<D, V>>,
     node_index: NodeIndex,
@@ -283,5 +293,39 @@ fn for_each_overlaping_pair_between<D, V: BoundingVolume>(
             for_each_overlaping_pair_between(arena, right_index, *left_left, f);
             for_each_overlaping_pair_between(arena, right_index, *left_right, f);
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::volumes::Aabb;
+
+    use super::*;
+
+    #[test]
+    fn update_parent_volume_on_insertion() {
+        let mut bvh: Bvh<(), Aabb<1>> = Bvh::default();
+        bvh.insert((), Aabb::from_min_max([0.0], [1.0]));
+        bvh.insert((), Aabb::from_min_max([2.0], [3.0]));
+        bvh.insert((), Aabb::from_min_max([3.0], [4.0]));
+        bvh.insert((), Aabb::from_min_max([2.0], [5.0]));
+        assert_eq!(
+            bvh.arena[bvh.root.expect("must have a root")].volume,
+            Aabb::from_min_max([0.0], [5.0])
+        )
+    }
+
+    #[test]
+    fn update_parent_volume_on_removal() {
+        let mut bvh: Bvh<(), Aabb<1>> = Bvh::default();
+        bvh.insert((), Aabb::from_min_max([0.0], [1.0]));
+        bvh.insert((), Aabb::from_min_max([2.0], [3.0]));
+        bvh.insert((), Aabb::from_min_max([3.0], [4.0]));
+        let id = bvh.insert((), Aabb::from_min_max([2.0], [5.0]));
+        bvh.remove(id);
+        assert_eq!(
+            bvh.arena[bvh.root.expect("must have a root")].volume,
+            Aabb::from_min_max([0.0], [4.0])
+        )
     }
 }
