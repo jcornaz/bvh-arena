@@ -1,8 +1,8 @@
-name: rust-beta
+name: look-ahead
 
 on:
   schedule:
-    - cron: '0 0 */7 * *'
+    - cron: '0 0 */10 * *'
 
   workflow_dispatch:
 
@@ -14,6 +14,9 @@ jobs:
   bevy-main:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    strategy:
+      matrix:
+        rust-version: ['stable', 'beta', 'nightly']
 
     steps:
       - name: Checkout repository
@@ -22,7 +25,7 @@ jobs:
       - name: Install rust toolchain
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly
+          toolchain: ${{ matrix.rust-version }}
           override: true
           profile: minimal
 
