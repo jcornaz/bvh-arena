@@ -1,6 +1,6 @@
 [package]
 name = "bvh-arena"
-version = "1.0.0-beta.2"
+version = "1.0.0"
 license = "Unlicense"
 authors = ["Jonathan Cornaz"]
 edition = "2021"
