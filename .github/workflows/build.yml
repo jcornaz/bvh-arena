@@ -19,76 +19,7 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Install rust toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: ${{ env.RUST_VERSION }}
-          override: true
-          profile: minimal
-          target: thumbv6m-none-eabi
-
-      - run: cargo update
-
-      - name: Cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.rustup
-            ~/.cargo
-            ./target
-          key: build-${{ env.RUST_VERSION }}-${{ hashFiles('**/Cargo.lock') }}-${{ hashFiles('**/*.rs') }}
-          restore-keys: |
-            build-${{ env.RUST_VERSION }}-${{ hashFiles('**/Cargo.lock') }}
-
-      - name: Check all targets
-        run: cargo check --all-targets
-
-      - name: Check no_std
-        run: cargo check --target thumbv6m-none-eabi
-
-      - run: cargo test
-      - run: cargo test -- --ignored
-
-  code-style:
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Install rust toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: ${{ env.RUST_VERSION }}
-          override: true
-          components: clippy, rustfmt
-
-      - run: cargo update
-
-      - name: Cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.rustup
-            ~/.cargo
-            ./target
-          key: code-style-${{ hashFiles('**/Cargo.lock') }}-${{ hashFiles('**/*.rs') }}
-          restore-keys: code-style-${{ hashFiles('**/Cargo.lock') }}-
-
-      - run: cargo fmt --all -- --check
-      - run: cargo clippy --all-features
-
-  documentation:
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2.4.0
 
       - name: Install rust toolchain
         uses: actions-rs/toolchain@v1.0.7
@@ -96,26 +27,50 @@ jobs:
           toolchain: ${{ env.RUST_VERSION }}
           override: true
           profile: minimal
+          target: thumbv6m-none-eabi
 
-      - run: cargo update
+      - run: cargo check --all-targets
 
-      - name: Cache
-        uses: actions/cache@v2
+      - name: Check no_std
+        run: cargo check --target thumbv6m-none-eabi
+
+      - run: cargo test --no-default-features
+      - run: cargo test --no-default-features -- --ignored
+      - run: cargo test
+      - run: cargo test -- --ignored
+      - run: cargo test --all-features
+      - run: cargo test --all-features -- --ignored
+
+  code-style:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.4.0
+      - name: Install rust toolchain
+        uses: actions-rs/toolchain@v1.0.7
         with:
-          path: |
-            ~/.rustup
-            ~/.cargo
-            ./target
-          key: docs-${{ hashFiles('**/Cargo.lock') }}-${{ hashFiles('**/*.rs') }}
-          restore-keys: docs-${{ hashFiles('**/Cargo.lock') }}-
+          toolchain: ${{ env.RUST_VERSION }}
+          override: true
+          components: clippy, rustfmt
+      - run: cargo fmt --all -- --check
+      - run: cargo clippy --all-features
 
+  documentation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.4.0
+      - name: Install rust toolchain
+        uses: actions-rs/toolchain@v1.0.7
+        with:
+          toolchain: nightly
+          override: true
+          profile: minimal
       - run: cargo doc --all-features --no-deps
 
   unwanted-dependencies:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+      - uses: actions/checkout@v2.4.0
+      - uses: actions-rs/toolchain@v1.0.7
         with:
           toolchain: stable
           override: true
@@ -126,11 +81,41 @@ jobs:
   unused-dependencies:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+      - uses: actions/checkout@v2.4.0
+      - uses: actions-rs/toolchain@v1.0.7
         with:
           toolchain: nightly
           override: true
           profile: minimal
       - run: cargo install cargo-udeps --locked
       - run: cargo udeps
+
+  release:
+    needs: [test, documentation]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+
+    steps:
+      - uses: google-github-actions/release-please-action@v3.1
+        id: release
+        with:
+          release-type: rust
+          changelog-types: '[{"type":"feat","section":"Features","hidden":false},{"type":"fix","section":"Bug Fixes","hidden":false},{"type":"perf","section":"Performance","hidden":false},{"type":"docs","section":"Documentation","hidden":false}]'
+
+  publish:
+    needs: release
+    runs-on: ubuntu-latest
+    if: ${{ needs.release.outputs.release_created }}
+    steps:
+      - uses: actions/checkout@v2.4
+      - uses: actions-rs/toolchain@v1.0
+        with:
+          toolchain: stable
+          override: true
+          profile: minimal
+      - run: cargo publish
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
