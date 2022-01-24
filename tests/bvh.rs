@@ -35,6 +35,19 @@ fn colliding_pair() {
 }
 
 #[test]
+fn colliding_with() {
+    let mut bvh = bvh();
+    bvh.insert(0, range(0.0, 2.0));
+    bvh.insert(1, range(3.0, 4.0));
+    let mut count = 0;
+    bvh.for_each_overlaps(&range(1.0, 2.5), |found| {
+        count += 1;
+        assert_eq!(*found, 0);
+    });
+    assert_eq!(count, 1);
+}
+
+#[test]
 fn after_remove() {
     let mut bvh = bvh();
     let id = bvh.insert(0, range(0.0, 2.0));

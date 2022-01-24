@@ -107,9 +107,16 @@ impl<D, V: BoundingVolume> Bvh<D, V> {
     }
 
     /// Invokes the given function for each pairs that have overlaping bounding volumes
-    pub fn for_each_overlaping_pair(&self, mut f: impl FnMut(&D, &D)) {
+    pub fn for_each_overlaping_pair(&self, mut on_overlaping_pair: impl FnMut(&D, &D)) {
         if let Some(root) = self.root {
-            for_each_overlaping_pair(&self.arena, root, &mut f);
+            for_each_overlaping_pair(&self.arena, root, &mut on_overlaping_pair);
+        }
+    }
+
+    /// Invokes the given function for each volume that overlaps the given `volume`
+    pub fn for_each_overlaps(&self, volume: &V, mut on_overlap: impl FnMut(&D)) {
+        if let Some(root) = self.root {
+            for_each_overlaps(&self.arena, root, volume, &mut on_overlap);
         }
     }
 }
@@ -292,6 +299,28 @@ fn for_each_overlaping_pair_between<D, V: BoundingVolume>(
         ) => {
             for_each_overlaping_pair_between(arena, right_index, *left_left, f);
             for_each_overlaping_pair_between(arena, right_index, *left_right, f);
+        }
+    }
+}
+
+fn for_each_overlaps<D, V: BoundingVolume>(
+    arena: &SlotMap<NodeIndex, Node<D, V>>,
+    node_index: NodeIndex,
+    volume: &V,
+    f: &mut impl FnMut(&D),
+) {
+    let node = &arena[node_index];
+    if !node.volume.overlaps(volume) {
+        return;
+    }
+    match &node.content {
+        Content::Leaf(d) => f(d),
+        Content::Tree {
+            left_index,
+            right_index,
+        } => {
+            for_each_overlaps(arena, *left_index, volume, f);
+            for_each_overlaps(arena, *right_index, volume, f);
         }
     }
 }
