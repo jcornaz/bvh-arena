@@ -10,6 +10,10 @@ repository = "https://github.com/jcornaz/bvh-arena"
 keywords = ["bvh", "sah", "bounding", "volume", "aabb"]
 categories = ["game-development"]
 
+[features]
+default = ["std"]
+std = ["slotmap/std"]
+
 [dependencies]
 # Private dependencies:
 slotmap = { version = "1.0", default-features = false }
