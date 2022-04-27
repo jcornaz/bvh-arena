@@ -1,0 +1,6 @@
+{
+  "extends": [
+    "config:base", ":automergePatch", "schedule:weekends", ":semanticCommitTypeAll(chore)"
+  ],
+  "prConcurrentLimit": 5
+}
