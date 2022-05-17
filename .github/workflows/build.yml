@@ -93,7 +93,6 @@ jobs:
 
   release:
     needs: [test, documentation]
-    environment: release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
