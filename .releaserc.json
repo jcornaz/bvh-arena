@@ -1,0 +1,41 @@
+{
+  "branches": [
+    {
+      "name": "main",
+      "prerelease": false
+    },
+    {
+      "name": "rc",
+      "prerelease": true
+    },
+    {
+      "name": "beta",
+      "prerelease": true
+    },
+    {
+      "name": "alpha",
+      "prerelease": true
+    }
+  ],
+  "plugins": [
+    ["@semantic-release/commit-analyzer", {
+      "releaseRules": [
+        { "type": "docs", "release": "patch" }
+      ]
+    }],
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/changelog",
+    ["@semantic-release/exec", {
+      "verifyConditionsCmd": "cargo publish --dry-run",
+      "prepare": "cargo install cargo-edit && cargo set-version ${nextRelease.version}",
+      "publishCmd": "cargo publish"
+    }],
+    ["@semantic-release/git", {
+      "assets": ["CHANGELOG.md", "Cargo.toml"],
+      "message": "chore(release): ${nextRelease.version}"
+    }],
+    ["@semantic-release/github", {
+      "successComment": ":tada: This issue has been resolved in version [${nextRelease.version}](<github_release_url>) :tada:"
+    }]
+  ]
+}
