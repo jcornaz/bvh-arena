@@ -5,6 +5,13 @@
 
 * make 'std' feature explicit ([6a69a48](https://github.com/jcornaz/bvh-arena/commit/6a69a48f7f1e2742f568e0539034ce2a4372604d))
 
+# [1.1.0](https://github.com/jcornaz/bvh-arena/compare/v1.0.0...v1.1.0) (2022-05-17)
+
+
+### Features
+
+* make 'std' feature explicit ([6a69a48](https://github.com/jcornaz/bvh-arena/commit/6a69a48f7f1e2742f568e0539034ce2a4372604d))
+
 # Changelog
 
 All notable changes are documented in this file.
