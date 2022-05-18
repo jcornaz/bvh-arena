@@ -103,7 +103,7 @@ jobs:
           toolchain: stable
           override: true
           profile: minimal
-      - run: npm install --no-save @semantic-release/git @semantic-release/changelog @semantic-release/exec
+      - run: npm install --no-save @semantic-release/exec
       - run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ github.token }}
