@@ -30,23 +30,12 @@
       }
     ],
     "@semantic-release/release-notes-generator",
-    "@semantic-release/changelog",
     [
       "@semantic-release/exec",
       {
-        "verifyConditionsCmd": "cargo publish --dry-run",
+        "verifyConditionsCmd": "cargo publish --dry-run --allow-dirty",
         "prepareCmd": "cargo install cargo-edit && cargo set-version ${nextRelease.version}",
-        "publishCmd": "cargo publish"
-      }
-    ],
-    [
-      "@semantic-release/git",
-      {
-        "assets": [
-          "CHANGELOG.md",
-          "Cargo.toml"
-        ],
-        "message": "chore(release): ${nextRelease.version}"
+        "publishCmd": "cargo publish --allow-dirty"
       }
     ],
     [
