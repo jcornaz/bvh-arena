@@ -1,9 +1,7 @@
 {
   "branches": [
-    {
-      "name": "main",
-      "prerelease": false
-    },
+    "+([0-9]).x",
+    "main",
     {
       "name": "rc",
       "prerelease": true
