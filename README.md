@@ -48,6 +48,23 @@ bvh.for_each_overlaping_pair(|a, b| println!("{a} overlaps {b}"));
 This crate is `no_std` compatible but requires a [global allocator](https://doc.rust-lang.org/stable/core/alloc/trait.GlobalAlloc.html).
 
 
+## Installation
+
+Add to `Cargo.toml`:
+
+```toml
+bvh-arena = "1"
+```
+
+## MSRV
+
+The minimum supported rust version is currently: `1.58`
+
+**It *may* be increased to a newer stable version in a minor release.** (but only if needed)
+
+It *will* be increased to the latest stable version in a major release. (even if not needed)
+
+
 ## Motivation
 
 In the context of building my own collision detection logic, I wanted to use a bounding-volume-hierarchy (BVH)
