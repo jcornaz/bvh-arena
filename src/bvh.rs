@@ -258,6 +258,7 @@ fn for_each_overlaping_pair_between<D, V: BoundingVolume>(
     if !left_node.volume.overlaps(&right_node.volume) {
         return;
     }
+    #[allow(clippy::match_same_arms)]
     match (&left_node.content, &right_node.content) {
         (Content::Leaf(d1), Content::Leaf(d2)) => f(d1, d2),
         (
@@ -341,7 +342,7 @@ mod tests {
         assert_eq!(
             bvh.arena[bvh.root.expect("must have a root")].volume,
             Aabb::from_min_max([0.0], [5.0])
-        )
+        );
     }
 
     #[test]
@@ -355,6 +356,6 @@ mod tests {
         assert_eq!(
             bvh.arena[bvh.root.expect("must have a root")].volume,
             Aabb::from_min_max([0.0], [4.0])
-        )
+        );
     }
 }
