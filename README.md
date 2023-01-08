@@ -1,10 +1,9 @@
 # bvh-arena
 
-
-[![License](https://img.shields.io/github/license/jcornaz/bvh-arena)](https://github.com/jcornaz/bvh-arena/blob/main/UNLICENSE)
+[![License](https://img.shields.io/crates/l/bvh-arena)](#Unlicense)
 [![Crates.io](https://img.shields.io/crates/v/bvh-arena)](https://crates.io/crates/bvh-arena)
-[![Docs](https://img.shields.io/docsrs/bvh-arena)](https://docs.rs/bvh-arena)
-
+![rustc](https://img.shields.io/badge/rustc-1.56+-blue?logo=rust)
+[![Docs](https://docs.rs/bvh-arena/badge.svg)](https://docs.rs/bvh-arena)
 
 A bounding-volume hierarchy for in-game broad-phase *collision detection* in rust
 
@@ -57,7 +56,7 @@ bvh-arena = "1"
 
 ## MSRV
 
-The minimum supported rust version is currently: `1.58`
+The minimum supported rust version is currently: `1.56`
 
 **It *may* be increased to a newer stable version in a minor release.** (but only if needed)
 
