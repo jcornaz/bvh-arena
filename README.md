@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/github/license/jcornaz/bvh-arena)](https://github.com/jcornaz/bvh-arena/blob/main/UNLICENSE)
 [![Crates.io](https://img.shields.io/crates/v/bvh-arena)](https://crates.io/crates/bvh-arena)
 [![Docs](https://img.shields.io/docsrs/bvh-arena)](https://docs.rs/bvh-arena)
-[![Build](https://img.shields.io/github/workflow/status/jcornaz/bvh-arena/build)](https://github.com/jcornaz/bvh-arena/actions)
+[![Build](https://img.shields.io/github/actions/workflow/status/jcornaz/bvh-arena/build.yml)](https://github.com/jcornaz/bvh-arena/actions)
 
 
 A bounding-volume hierarchy for in-game broad-phase *collision detection* in rust
