@@ -44,8 +44,8 @@ impl<D, V: BoundingVolume> Bvh<D, V> {
 
     /// Remove a bounding volume
     ///
-    /// It requires the id returned when the volume was inserted
-    #[allow(clippy::single_match_else)] // false-positive
+    /// It requires the id that was returned by the insert method
+    #[allow(clippy::single_match_else, clippy::missing_panics_doc)] // false-positives
     pub fn remove(&mut self, VolumeHandle(node_index): VolumeHandle) {
         match self.arena.remove(node_index).and_then(|n| n.parent) {
             Some(parent_index) => {
