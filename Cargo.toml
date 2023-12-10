@@ -10,6 +10,9 @@ repository = "https://github.com/jcornaz/bvh-arena"
 keywords = ["bvh", "sah", "bounding", "volume", "aabb"]
 categories = ["game-development"]
 
+[badges.maintenance]
+status = "passively-maintained"
+
 [features]
 default = ["std"]
 std = ["slotmap/std"]
