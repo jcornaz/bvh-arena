@@ -22,7 +22,7 @@ std = ["slotmap/std"]
 slotmap = { version = "1.0.7", default-features = false }
 
 [dev-dependencies]
-glam = "0.24.2"
+glam = "0.25.0"
 
 [profile.dev]
 opt-level = 1
