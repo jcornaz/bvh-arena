@@ -1,14 +1,8 @@
 [advisories]
-vulnerability = "deny"
-unmaintained = "deny"
 yanked = "deny"
-notice = "deny"
 ignore = []
 
 [licenses]
-default = "deny"
-unlicensed = "deny"
-copyleft = "deny"
 allow = [
     "Unlicense",
     "MIT",
