@@ -1,5 +1,34 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base", ":automergePatch", "schedule:weekends", ":semanticCommitTypeAll(chore)"
+    "config:recommended"
+  ],
+  "timezone": "Europe/Zurich",
+  "schedule": [
+    "after 10pm",
+    "before 5:00am"
+  ],
+  "packageRules": [
+    {
+      "matchCurrentVersion": ">=1.0.0",
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "automerge": true
+    },
+    {
+      "matchCurrentVersion": ">=0.1.0 <1.0.0",
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "automerge": true
+    },
+    {
+      "matchDepTypes": [
+        "dev-dependencies"
+      ],
+      "automerge": true
+    }
   ]
 }
