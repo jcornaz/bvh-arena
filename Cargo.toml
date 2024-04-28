@@ -19,10 +19,10 @@ std = ["slotmap/std"]
 
 [dependencies]
 # Private dependencies:
-slotmap = { version = "1.0.7", default-features = false }
+slotmap = { version = "1.0", default-features = false }
 
 [dev-dependencies]
-glam = "0.25.0"
+glam = "0.27.0"
 
 [profile.dev]
 opt-level = 1
