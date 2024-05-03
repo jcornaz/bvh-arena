@@ -8,6 +8,7 @@
     "after 10pm",
     "before 5:00am"
   ],
+  "rangeStrategy": "update-lockfile",
   "packageRules": [
     {
       "matchCurrentVersion": ">=1.0.0",
