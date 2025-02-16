@@ -4,6 +4,7 @@
 [![Crates.io](https://img.shields.io/crates/v/bvh-arena)](https://crates.io/crates/bvh-arena)
 ![rustc](https://img.shields.io/badge/rustc-1.56+-blue?logo=rust)
 [![Docs](https://docs.rs/bvh-arena/badge.svg)](https://docs.rs/bvh-arena)
+![Maintenance](https://img.shields.io/maintenance/passively/2025)
 
 A bounding-volume hierarchy for in-game broad-phase *collision detection* in rust
 
