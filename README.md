@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/crates/l/bvh-arena)](#Unlicense)
 [![Crates.io](https://img.shields.io/crates/v/bvh-arena)](https://crates.io/crates/bvh-arena)
-![rustc](https://img.shields.io/badge/rustc-1.56+-blue?logo=rust)
+![rustc](https://img.shields.io/badge/rustc-1.60+-blue?logo=rust)
 [![Docs](https://docs.rs/bvh-arena/badge.svg)](https://docs.rs/bvh-arena)
 ![Maintenance](https://img.shields.io/maintenance/passively/2026)
 
@@ -57,7 +57,7 @@ bvh-arena = "1"
 
 ## MSRV
 
-The minimum supported rust version is currently: `1.56`
+The minimum supported rust version is currently: `1.60`
 
 **It *may* be increased to a newer stable version in a minor release.** (but only if needed)
 
