@@ -50,7 +50,7 @@ impl<D, V: BoundingVolume> Bvh<D, V> {
         let node = self.arena.remove(node_index)?;
         let data = match node.content {
             Content::Leaf(d) => Some(d),
-            _ => None,
+            Content::Tree { .. } => None,
         };
 
         match node.parent {
