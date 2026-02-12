@@ -52,7 +52,8 @@ fn after_remove() {
     let mut bvh = bvh();
     let id = bvh.insert(0, range(0.0, 2.0));
     bvh.insert(1, range(1.0, 3.0));
-    bvh.remove(id);
+    let removed = bvh.remove(id);
+    assert_eq!(removed, Some(0));
     bvh.for_each_overlaping_pair(|_, _| {
         panic!("A pair was found");
     });
