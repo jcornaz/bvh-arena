@@ -46,8 +46,14 @@ impl<D, V: BoundingVolume> Bvh<D, V> {
     ///
     /// It requires the id that was returned by the insert method
     #[allow(clippy::single_match_else, clippy::missing_panics_doc)] // false-positives
-    pub fn remove(&mut self, VolumeHandle(node_index): VolumeHandle) {
-        match self.arena.remove(node_index).and_then(|n| n.parent) {
+    pub fn remove(&mut self, VolumeHandle(node_index): VolumeHandle) -> Option<D> {
+        let node = self.arena.remove(node_index)?;
+        let data = match node.content {
+            Content::Leaf(d) => Some(d),
+            Content::Tree { .. } => None,
+        };
+
+        match node.parent {
             Some(parent_index) => {
                 let parent = self
                     .arena
@@ -98,6 +104,8 @@ impl<D, V: BoundingVolume> Bvh<D, V> {
             // There was no parent, which means it is the root that has been removed
             None => self.root = None,
         }
+
+        data
     }
 
     /// Clear the hierarchy, leaving it empty
