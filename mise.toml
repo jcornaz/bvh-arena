@@ -1,0 +1,7 @@
+[tools]
+"cargo:cargo-hack" = "0.6.43"
+"cargo:cargo-msrv" = "0.18.4"
+"cargo:cargo-release" = "1.0.0"
+just = "1.46.0"
+rust = "1.93.1"
+rust-analyzer = "2026-02-09"
