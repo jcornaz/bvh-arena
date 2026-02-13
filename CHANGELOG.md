@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+
+## [1.2.0] - 2026-02-13
+
 ### Features
 
 * Let `Bvh::remove` return the removed data (Thanks to @Kyriota)
@@ -32,6 +35,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * **readme:** remove build status badge ([bbb4db8](https://github.com/jcornaz/bvh-arena/commit/bbb4db8d6ac2d22e8fc496988b117e53be4bbb90))
 
 
-[Unreleased]: https://github.com/jcornaz/bvh-arena/compare/v1.1.3...HEAD
+[Unreleased]: https://github.com/jcornaz/bvh-arena/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/jcornaz/bvh-arena/compare/v1.1.3...v1.2.0
 [1.1.3]: https://github.com/jcornaz/bvh-arena/compare/v1.1.2...v1.1.3
 [1.1.2]: https://github.com/jcornaz/bvh-arena/compare/v1.1.1...v1.1.2
