@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Documentation
+
+* Clarify when `Aabb::from_min_max` can panic
+
 
 ## [1.2.0] - 2026-02-13
 
