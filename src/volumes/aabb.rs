@@ -17,7 +17,7 @@ impl<const D: usize> Aabb<D> {
     ///
     /// # Panics
     ///
-    /// Panic if `max` is not greater than `min`
+    /// Panic if `max` is lesser than `min` in any dimension.
     #[must_use]
     pub fn from_min_max(min: impl Into<[f32; D]>, max: impl Into<[f32; D]>) -> Self {
         let min: [f32; D] = min.into();
