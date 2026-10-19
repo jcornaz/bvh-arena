@@ -29,6 +29,7 @@ impl<D, V: BoundingVolume> Bvh<D, V> {
     /// Creates an empty bounding volume hierarchy with the given capacity.
     ///
     /// It will not reallocate until it holds at least capacity elements.
+    #[must_use]
     pub fn with_capacity(capacity: usize) -> Self {
         Self {
             arena: SlotMap::with_capacity_and_key(capacity),
