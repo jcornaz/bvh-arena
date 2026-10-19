@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+
+## [1.3.0] - 2026-10-19
+
 ### Features
 
 * `Bvh::with_capacity`
@@ -46,7 +49,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * **readme:** remove build status badge ([bbb4db8](https://github.com/jcornaz/bvh-arena/commit/bbb4db8d6ac2d22e8fc496988b117e53be4bbb90))
 
 
-[Unreleased]: https://github.com/jcornaz/bvh-arena/compare/v1.2.1...HEAD
+[Unreleased]: https://github.com/jcornaz/bvh-arena/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/jcornaz/bvh-arena/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/jcornaz/bvh-arena/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/jcornaz/bvh-arena/compare/v1.1.3...v1.2.0
 [1.1.3]: https://github.com/jcornaz/bvh-arena/compare/v1.1.2...v1.1.3
