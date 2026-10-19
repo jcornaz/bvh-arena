@@ -26,6 +26,16 @@ impl<D, V: BoundingVolume> Default for Bvh<D, V> {
 }
 
 impl<D, V: BoundingVolume> Bvh<D, V> {
+    /// Creates an empty bounding volume hierarchy with the given capacity.
+    ///
+    /// It will not reallocate until it holds at least capacity elements.
+    pub fn with_capacity(capacity: usize) -> Self {
+        Self {
+            arena: SlotMap::with_capacity_and_key(capacity),
+            root: None,
+        }
+    }
+
     /// Insert a bounding volume
     ///
     /// It returns an ID that can be u to later remove the volume
@@ -365,5 +375,12 @@ mod tests {
             bvh.arena[bvh.root.expect("must have a root")].volume,
             Aabb::from_min_max([0.0], [4.0])
         );
+    }
+
+    #[test]
+    fn with_capacity() {
+        let capacity = 10;
+        let bvh: Bvh<(), Aabb<1>> = Bvh::with_capacity(capacity);
+        assert!(bvh.arena.capacity() >= capacity);
     }
 }
