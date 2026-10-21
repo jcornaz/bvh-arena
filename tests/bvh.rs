@@ -3,6 +3,7 @@
 extern crate alloc;
 
 use alloc::collections::BTreeSet;
+use alloc::vec::Vec;
 
 use glam::Vec2;
 
@@ -58,6 +59,20 @@ fn colliding_with_right() {
         assert_eq!(*found, 1);
     });
     assert_eq!(count, 1);
+}
+
+#[test]
+fn overlaps_iter() {
+    let mut bvh = bvh();
+    bvh.insert(0, range(0.0, 1.0));
+    bvh.insert(1, range(2.0, 3.0));
+    bvh.insert(2, range(4.0, 5.0));
+
+    let overlaps = bvh.overlaps(&range(0.5, 2.5)).copied().collect::<Vec<_>>();
+
+    assert_eq!(overlaps.len(), 2);
+    assert!(overlaps.contains(&0));
+    assert!(overlaps.contains(&1));
 }
 
 #[test]

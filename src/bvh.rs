@@ -133,10 +133,13 @@ impl<D, V: BoundingVolume> Bvh<D, V> {
     }
 
     /// Invokes the given function for each volume that overlaps the given `volume`
-    pub fn for_each_overlaps(&self, volume: &V, mut on_overlap: impl FnMut(&D)) {
-        if let Some(root) = self.root {
-            for_each_overlaps(&self.arena, root, volume, &mut on_overlap);
-        }
+    pub fn for_each_overlaps(&self, volume: &V, on_overlap: impl FnMut(&D)) {
+        self.overlaps(volume).for_each(on_overlap);
+    }
+
+    /// Create an iterator of all volumes that overlap the given `volume`
+    pub fn overlaps<'a>(&'a self, volume: &'a V) -> impl Iterator<Item = &'a D> {
+        overlaps_iter(&self.arena, self.root, volume)
     }
 }
 
@@ -323,26 +326,50 @@ fn for_each_overlaping_pair_between<D, V: BoundingVolume>(
     }
 }
 
-fn for_each_overlaps<D, V: BoundingVolume>(
-    arena: &SlotMap<NodeIndex, Node<D, V>>,
-    node_index: NodeIndex,
-    volume: &V,
-    f: &mut impl FnMut(&D),
-) {
-    let node = &arena[node_index];
-    if !node.volume.overlaps(volume) {
-        return;
-    }
-    match &node.content {
-        Content::Leaf(d) => f(d),
-        Content::Tree {
-            left_index,
-            right_index,
-        } => {
-            for_each_overlaps(arena, *left_index, volume, f);
-            for_each_overlaps(arena, *right_index, volume, f);
+fn overlaps_iter<'a, D, V: BoundingVolume>(
+    arena: &'a SlotMap<NodeIndex, Node<D, V>>,
+    mut cur: Option<NodeIndex>,
+    volume: &'a V,
+) -> impl Iterator<Item = &'a D> {
+    let mut prev = None;
+
+    core::iter::from_fn(move || {
+        while let Some(c) = cur.map(|c| &arena[c]) {
+            let prev = core::mem::replace(&mut prev, cur);
+            match &c.content {
+                Content::Leaf(d) => {
+                    cur = c.parent;
+                    if c.volume.overlaps(volume) {
+                        return Some(d);
+                    }
+                }
+                Content::Tree {
+                    left_index,
+                    right_index,
+                } => {
+                    if prev == Some(*left_index) {
+                        // coming up from left
+                        // go right
+                        cur = Some(*right_index);
+                    } else if prev == Some(*right_index) {
+                        // coming up from right
+                        // back to parent
+                        cur = c.parent;
+                    } else if c.volume.overlaps(volume) {
+                        // coming down from parent or this is root
+                        // hit: go left
+                        cur = Some(*left_index);
+                    } else {
+                        // coming down from parent or this is root
+                        // no hit: back to parent
+                        cur = c.parent;
+                    }
+                }
+            }
         }
-    }
+
+        None
+    })
 }
 
 #[cfg(test)]
